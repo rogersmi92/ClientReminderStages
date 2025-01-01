@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Update</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            width: 200px;
+        }
+
+        .form-section {
+            background: white;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #20c997;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #198754;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="C:\Users\roger\source\repos\Client Reminder Program\Client Reminder Program\Images\sor.png" alt="Stages of Recovery Logo">
+        <h1>Enter Case Number</h1>
+    </div>
+
+    <div class="form-section">
+        <h2>Client Lookup</h2>
+        <form action="/submit" method="POST">
+            <div class="mb-3">
+                <label for="caseNumber" class="form-label">Case Number:</label>
+                <input type="text" class="form-control" id="caseNumber" name="case_number" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+

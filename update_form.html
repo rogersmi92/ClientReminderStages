@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Client Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            width: 200px;
+        }
+
+        .form-section {
+            background: white;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #20c997;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #198754;
+        }
+
+        .disabled-field {
+            background-color: #e9ecef !important;
+        }
+
+        .form-select option:first-child {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="C:\Users\roger\source\repos\Client Reminder Program\Client Reminder Program\Images\sor.png" alt="Stages of Recovery Logo">
+        <h1>Update Information for Case Number: {{ case_number }}</h1>
+    </div>
+
+    <div class="form-section">
+        <h2>Client Information</h2>
+        <form action="/update_submit" method="POST">
+            <input type="hidden" name="case_number" value="{{ case_number }}">
+
+            <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="dob" class="form-label">Date of Birth (MM/DD/YYYY)</label>
+                <input type="date" class="form-control" id="dob" name="dob" value="{{ dob }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="counselor" class="form-label">Counselor</label>
+                <select class="form-select" id="counselor" name="counselor">
+                    <option value="">Select Counselor</option>
+                    <option value="Avery Holder">Avery Holder</option>
+                    <option value="Lynn Whitfeild">Lynn Whitfeild</option>
+                    <option value="Matt Vasquez">Matt Vasquez</option>
+                    <option value="Kendel Wibbing">Kendel Wibbing</option>
+                    <option value="Rommel Hover">Rommel Hover</option>
+                    <option value="Sean Jones">Sean Jones</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="vital_docs_needed" class="form-label">Do you need to replace vital documents?</label>
+                <select class="form-select" id="vital_docs_needed" name="vital_docs_needed">
+                    <option value="">Select an Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="vital_docs" class="form-label">If yes, which ones?</label>
+                <input type="text" class="form-control" id="vital_docs" name="vital_docs" value="{{ vital_docs }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="snap_started" class="form-label">Have you started a SNAP application?</label>
+                <select class="form-select" id="snap_started" name="snap_started">
+                    <option value="">Select an Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Not Applying">Not Applying</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="snap_docs" class="form-label">If yes, which documents have you sent to the HHSC office?</label>
+                <input type="text" class="form-control" id="snap_docs" name="snap_docs" value="{{ snap_docs }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="benefits_help" class="form-label">Do you need help applying for other benefits?</label>
+                <select class="form-select" id="benefits_help" name="benefits_help">
+                    <option value="">Select an Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="benefits_explain" class="form-label">If yes, explain:</label>
+                <input type="text" class="form-control" id="benefits_explain" name="benefits_explain" value="{{ benefits_explain }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="started_work" class="form-label">Have you started working?</label>
+                <select class="form-select" id="started_work" name="started_work">
+                    <option value="">Select an Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div id="work_status_section" class="mb-3" style="display: none;">
+                <label for="work_status" class="form-label">How are the applications coming along?</label>
+                <select class="form-select" id="work_status" name="work_status">
+                    <option value="">Select an Option</option>
+                    <option value="Applying">Applying</option>
+                    <option value="Interview(s) Scheduled">Interview(s) Scheduled</option>
+                    <option value="Offer Accepted, On-boarding">Offer Accepted, On-boarding</option>
+                    <option value="I'm in PHP, this doesn't apply">I'm in PHP, this doesn't apply</option>
+                </select>
+            </div>
+
+            <div id="explanation-section">
+                <div id="applying-explanation" class="mb-3" style="display: none;">
+                    <label for="applying-details" class="form-label">Applications:</label>
+                    <textarea class="form-control" id="applying-details" name="applying_details" placeholder="Include at least two places you have applied since last check-in."></textarea>
+                </div>
+
+                <div id="interview-explanation" class="mb-3" style="display: none;">
+                    <label for="interview-details" class="form-label">Interview Details:</label>
+                    <textarea class="form-control" id="interview-details" name="interview_details" placeholder="Explain where, with whom, and what time your interview(s) is(are)."></textarea>
+                </div>
+
+                <div id="onboarding-explanation" class="mb-3" style="display: none;">
+                    <label for="onboarding-details" class="form-label">On-boarding Details:</label>
+                    <textarea class="form-control" id="onboarding-details" name="onboarding_details" placeholder="Describe where you are at in the on-boarding process and your expected start date."></textarea>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="pcp" class="form-label">Who is your Primary Care Physician (PCP)?</label>
+                <input type="text" class="form-control" id="pcp" name="pcp" value="{{ pcp }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="pcp_help" class="form-label">Do you need help finding a PCP?</label>
+                <select class="form-select" id="pcp_help" name="pcp_help">
+                    <option value="">Select an Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Save Updates</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("vital_docs_needed").addEventListener("change", function() {
+            const vitalDocsField = document.getElementById("vital_docs");
+            vitalDocsField.disabled = this.value === "No";
+            vitalDocsField.classList.toggle("disabled-field", this.value === "No");
+        });
+
+        document.getElementById("snap_started").addEventListener("change", function() {
+            const snapDocsField = document.getElementById("snap_docs");
+            snapDocsField.disabled = this.value === "No" || this.value === "Not Applying";
+            snapDocsField.classList.toggle("disabled-field", this.value === "No" || this.value === "Not Applying");
+        });
+
+        document.getElementById("benefits_help").addEventListener("change", function() {
+            const benefitsExplainField = document.getElementById("benefits_explain");
+            benefitsExplainField.disabled = this.value === "No";
+            benefitsExplainField.classList.toggle("disabled-field", this.value === "No");
+        });
+
+        document.getElementById("started_work").addEventListener("change", function() {
+            const workStatusSection = document.getElementById("work_status_section");
+            workStatusSection.style.display = this.value === "No" ? "block" : "none";
+        });
+
+        document.getElementById("work_status").addEventListener("change", function() {
+            const applyingSection = document.getElementById("applying-explanation");
+            const interviewSection = document.getElementById("interview-explanation");
+            const onboardingSection = document.getElementById("onboarding-explanation");
+
+            applyingSection.style.display = "none";
+            interviewSection.style.display = "none";
+            onboardingSection.style.display = "none";
+
+            if (this.value === "Applying") {
+                applyingSection.style.display = "block";
+            } else if (this.value === "Interview(s) Scheduled") {
+                interviewSection.style.display = "block";
+            } else if (this.value === "Offer Accepted, On-boarding") {
+                onboardingSection.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
