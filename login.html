@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Update</title>
+    <title>Staff Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
@@ -51,22 +51,23 @@
 </head>
 <body>
     <div class="header">
-        <!-- Updated image source to use Flask's static folder -->
         <img src="/static/images/sor.png" alt="Stages of Recovery Logo">
-        <h1>Enter Case Number</h1>
+        <h1>Staff Login</h1>
     </div>
 
     <div class="form-section">
-        <h2>Client Lookup</h2>
-        <form action="/submit" method="POST">
+        <h2>Login to Your Account</h2>
+        <form action="/login" method="POST">
             <div class="mb-3">
-                <label for="caseNumber" class="form-label">Case Number:</label>
-                <input type="text" class="form-control" id="caseNumber" name="case_number" required>
+                <label for="email" class="form-label">Email Address:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
     </div>
 </body>
 </html>
-
-

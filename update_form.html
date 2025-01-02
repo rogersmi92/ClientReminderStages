@@ -51,15 +51,11 @@
         .disabled-field {
             background-color: #e9ecef !important;
         }
-
-        .form-select option:first-child {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="C:\Users\roger\source\repos\Client Reminder Program\Client Reminder Program\Images\sor.png" alt="Stages of Recovery Logo">
+        <img src="/static/images/sor.png" alt="Stages of Recovery Logo">
         <h1>Update Information for Case Number: {{ case_number }}</h1>
     </div>
 
@@ -68,168 +64,254 @@
         <form action="/update_submit" method="POST">
             <input type="hidden" name="case_number" value="{{ case_number }}">
 
+            <!-- Full Name -->
             <div class="mb-3">
                 <label for="full_name" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}">
+                <input type="text" class="form-control disabled-field" id="full_name" name="full_name" value="{{ client_data['Name'] }}" readonly>
             </div>
 
+            <!-- Date of Birth -->
             <div class="mb-3">
-                <label for="dob" class="form-label">Date of Birth (MM/DD/YYYY)</label>
-                <input type="date" class="form-control" id="dob" name="dob" value="{{ dob }}">
+                <label for="dob" class="form-label">Date of Birth</label>
+                <input type="date" class="form-control disabled-field" id="dob" name="dob" value="{{ client_data['DOB'] }}" readonly>
             </div>
 
+            <!-- Counselor -->
             <div class="mb-3">
                 <label for="counselor" class="form-label">Counselor</label>
-                <select class="form-select" id="counselor" name="counselor">
-                    <option value="">Select Counselor</option>
-                    <option value="Avery Holder">Avery Holder</option>
-                    <option value="Lynn Whitfeild">Lynn Whitfeild</option>
-                    <option value="Matt Vasquez">Matt Vasquez</option>
-                    <option value="Kendel Wibbing">Kendel Wibbing</option>
-                    <option value="Rommel Hover">Rommel Hover</option>
-                    <option value="Sean Jones">Sean Jones</option>
-                </select>
+                <input type="text" class="form-control disabled-field" id="counselor" name="counselor" value="{{ client_data['Counselor'] }}" readonly>
             </div>
 
+            <!-- Phone Number Section -->
             <div class="mb-3">
-                <label for="vital_docs_needed" class="form-label">Do you need to replace vital documents?</label>
-                <select class="form-select" id="vital_docs_needed" name="vital_docs_needed">
+                <label for="phone_changed" class="form-label">Has your phone number changed?</label>
+                <select class="form-select" id="phone_changed" name="phone_changed">
                     <option value="">Select an Option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes" {% if phone_changed == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if phone_changed == 'No' %}selected{% endif %}>No</option>
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="vital_docs" class="form-label">If yes, which ones?</label>
-                <input type="text" class="form-control" id="vital_docs" name="vital_docs" value="{{ vital_docs }}">
+            <div id="new_phone_section" class="mb-3" style="display: {% if phone_changed == 'Yes' %}block{% else %}none{% endif %};">
+                <label for="new_phone" class="form-label">New Phone Number</label>
+                <input type="tel" class="form-control" id="new_phone" name="new_phone" value="{{ new_phone or '' }}">
             </div>
 
+            <!-- Email Section -->
             <div class="mb-3">
-                <label for="snap_started" class="form-label">Have you started a SNAP application?</label>
-                <select class="form-select" id="snap_started" name="snap_started">
+                <label for="email_changed" class="form-label">Has your email changed?</label>
+                <select class="form-select" id="email_changed" name="email_changed">
                     <option value="">Select an Option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Not Applying">Not Applying</option>
+                    <option value="Yes" {% if email_changed == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if email_changed == 'No' %}selected{% endif %}>No</option>
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="snap_docs" class="form-label">If yes, which documents have you sent to the HHSC office?</label>
-                <input type="text" class="form-control" id="snap_docs" name="snap_docs" value="{{ snap_docs }}">
+            <div id="new_email_section" class="mb-3" style="display: {% if email_changed == 'Yes' %}block{% else %}none{% endif %};">
+                <label for="new_email" class="form-label">New Email Address</label>
+                <input type="email" class="form-control" id="new_email" name="new_email" value="{{ new_email or '' }}">
             </div>
 
+            <!-- SNAP Section -->
+            <div class="mb-3">
+                <label for="snap_help" class="form-label">Do you need help with SNAP?</label>
+                <select class="form-select" id="snap_help" name="snap_help">
+                    <option value="">Select an Option</option>
+                    <option value="Yes" {% if snap_help == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if snap_help == 'No' %}selected{% endif %}>No</option>
+                </select>
+            </div>
+
+            <!-- Other Benefits Section -->
             <div class="mb-3">
                 <label for="benefits_help" class="form-label">Do you need help applying for other benefits?</label>
                 <select class="form-select" id="benefits_help" name="benefits_help">
                     <option value="">Select an Option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes" {% if benefits_help == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if benefits_help == 'No' %}selected{% endif %}>No</option>
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="benefits_explain" class="form-label">If yes, explain:</label>
-                <input type="text" class="form-control" id="benefits_explain" name="benefits_explain" value="{{ benefits_explain }}">
+            <div id="benefits_options" class="mb-3" style="display: {% if benefits_help == 'Yes' %}block{% else %}none{% endif %};">
+                <label class="form-label">Which ones?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="benefits[]" value="Retirement" id="retirement" {% if 'Retirement' in benefits %}checked{% endif %}>
+                    <label class="form-check-label" for="retirement">Retirement</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="benefits[]" value="Veterans" id="veterans" {% if 'Veterans' in benefits %}checked{% endif %}>
+                    <label class="form-check-label" for="veterans">Veterans</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="benefits[]" value="Disability" id="disability" {% if 'Disability' in benefits %}checked{% endif %}>
+                    <label class="form-check-label" for="disability">Disability</label>
+                </div>
             </div>
 
+            <!-- Vital Documents Section -->
+            <div class="mb-3">
+                <label for="vital_docs_needed" class="form-label">Do you need to replace vital documents?</label>
+                <select class="form-select" id="vital_docs_needed" name="vital_docs_needed">
+                    <option value="">Select an Option</option>
+                    <option value="Yes" {% if vital_docs_needed == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if vital_docs_needed == 'No' %}selected{% endif %}>No</option>
+                </select>
+            </div>
+
+            <div id="vital_docs_options" class="mb-3" style="display: {% if vital_docs_needed == 'Yes' %}block{% else %}none{% endif %};">
+                <label class="form-label">Which ones?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="vital_docs[]" value="State ID" id="state_id" {% if 'State ID' in vital_docs %}checked{% endif %}>
+                    <label class="form-check-label" for="state_id">State ID</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="vital_docs[]" value="Driver's License" id="drivers_license" {% if "Driver's License" in vital_docs %}checked{% endif %}>
+                    <label class="form-check-label" for="drivers_license">Driver's License</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="vital_docs[]" value="Social Security Card" id="social_security" {% if 'Social Security Card' in vital_docs %}checked{% endif %}>
+                    <label class="form-check-label" for="social_security">Social Security Card</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="vital_docs[]" value="Birth Certificate" id="birth_certificate" {% if 'Birth Certificate' in vital_docs %}checked{% endif %}>
+                    <label class="form-check-label" for="birth_certificate">Birth Certificate</label>
+                </div>
+            </div>
+
+            <!-- PCP Section -->
+            <div class="mb-3">
+                <label for="pcp_help" class="form-label">Do you need help finding a Primary Care Physician in Lubbock?</label>
+                <select class="form-select" id="pcp_help" name="pcp_help">
+                    <option value="">Select an Option</option>
+                    <option value="Yes" {% if pcp_help == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if pcp_help == 'No' %}selected{% endif %}>No</option>
+                </select>
+            </div>
+
+            <div id="pcp_details_section" class="mb-3" style="display: {% if pcp_help == 'No' %}block{% else %}none{% endif %};">
+                <label for="pcp_details" class="form-label">Who is your PCP?</label>
+                <input type="text" class="form-control" id="pcp_details" name="pcp_details" value="{{ pcp_details or '' }}">
+            </div>
+
+            <!-- "Have you started working?" -->
             <div class="mb-3">
                 <label for="started_work" class="form-label">Have you started working?</label>
                 <select class="form-select" id="started_work" name="started_work">
                     <option value="">Select an Option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes" {% if started_work == 'Yes' %}selected{% endif %}>Yes</option>
+                    <option value="No" {% if started_work == 'No' %}selected{% endif %}>No</option>
                 </select>
             </div>
 
-            <div id="work_status_section" class="mb-3" style="display: none;">
+            <div id="work_status_section" class="mb-3" style="display: {% if started_work == 'No' %}block{% else %}none{% endif %};">
                 <label for="work_status" class="form-label">How are the applications coming along?</label>
                 <select class="form-select" id="work_status" name="work_status">
                     <option value="">Select an Option</option>
-                    <option value="Applying">Applying</option>
-                    <option value="Interview(s) Scheduled">Interview(s) Scheduled</option>
-                    <option value="Offer Accepted, On-boarding">Offer Accepted, On-boarding</option>
-                    <option value="I'm in PHP, this doesn't apply">I'm in PHP, this doesn't apply</option>
+                    <option value="Applying" {% if work_status == 'Applying' %}selected{% endif %}>Applying</option>
+                    <option value="Interview(s) Scheduled" {% if work_status == 'Interview(s) Scheduled' %}selected{% endif %}>Interview(s) Scheduled</option>
+                    <option value="Offer Accepted, On-boarding" {% if work_status == 'Offer Accepted, On-boarding' %}selected{% endif %}>Offer Accepted, On-boarding</option>
+                    <option value="I'm in PHP, this doesn't apply" {% if work_status == "I'm in PHP, this doesn't apply" %}selected{% endif %}>I'm in PHP, this doesn't apply</option>
                 </select>
             </div>
 
             <div id="explanation-section">
-                <div id="applying-explanation" class="mb-3" style="display: none;">
+                <div id="applying-explanation" class="mb-3" style="display: {% if work_status == 'Applying' %}block{% else %}none{% endif %};">
                     <label for="applying-details" class="form-label">Applications:</label>
-                    <textarea class="form-control" id="applying-details" name="applying_details" placeholder="Include at least two places you have applied since last check-in."></textarea>
+                    <textarea class="form-control" id="applying-details" name="applying_details" placeholder="Include at least two places you have applied since last check-in.">{{ applying_details or '' }}</textarea>
                 </div>
 
-                <div id="interview-explanation" class="mb-3" style="display: none;">
+                <div id="interview-explanation" class="mb-3" style="display: {% if work_status == 'Interview(s) Scheduled' %}block{% else %}none{% endif %};">
                     <label for="interview-details" class="form-label">Interview Details:</label>
-                    <textarea class="form-control" id="interview-details" name="interview_details" placeholder="Explain where, with whom, and what time your interview(s) is(are)."></textarea>
+                    <textarea class="form-control" id="interview-details" name="interview_details" placeholder="Explain where, with whom, and what time your interview(s) is(are).">{{ interview_details or '' }}</textarea>
                 </div>
 
-                <div id="onboarding-explanation" class="mb-3" style="display: none;">
+                <div id="onboarding-explanation" class="mb-3" style="display: {% if work_status == 'Offer Accepted, On-boarding' %}block{% else %}none{% endif %};">
                     <label for="onboarding-details" class="form-label">On-boarding Details:</label>
-                    <textarea class="form-control" id="onboarding-details" name="onboarding_details" placeholder="Describe where you are at in the on-boarding process and your expected start date."></textarea>
+                    <textarea class="form-control" id="onboarding-details" name="onboarding_details" placeholder="Describe where you are at in the on-boarding process and your expected start date.">{{ onboarding_details or '' }}</textarea>
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label for="pcp" class="form-label">Who is your Primary Care Physician (PCP)?</label>
-                <input type="text" class="form-control" id="pcp" name="pcp" value="{{ pcp }}">
-            </div>
-
-            <div class="mb-3">
-                <label for="pcp_help" class="form-label">Do you need help finding a PCP?</label>
-                <select class="form-select" id="pcp_help" name="pcp_help">
-                    <option value="">Select an Option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div>
-
+            <!-- Save Button -->
             <button type="submit" class="btn btn-primary w-100">Save Updates</button>
         </form>
     </div>
 
-    <script>
-        document.getElementById("vital_docs_needed").addEventListener("change", function() {
-            const vitalDocsField = document.getElementById("vital_docs");
-            vitalDocsField.disabled = this.value === "No";
-            vitalDocsField.classList.toggle("disabled-field", this.value === "No");
-        });
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const workStatusSection = document.getElementById("work_status_section");
+        const applyingSection = document.getElementById("applying-explanation");
+        const interviewSection = document.getElementById("interview-explanation");
+        const onboardingSection = document.getElementById("onboarding-explanation");
+        const vitalDocsNeeded = document.getElementById("vital_docs_needed");
+        const vitalDocsOptions = document.getElementById("vital_docs_options");
+        const pcpHelp = document.getElementById("pcp_help");
+        const pcpDetailsSection = document.getElementById("pcp_details_section");
+        const phoneChanged = document.getElementById("phone_changed");
+        const newPhoneSection = document.getElementById("new_phone_section");
+        const emailChanged = document.getElementById("email_changed");
+        const newEmailSection = document.getElementById("new_email_section");
+        const benefitsHelp = document.getElementById("benefits_help");
+        const benefitsOptions = document.getElementById("benefits_options");
 
-        document.getElementById("snap_started").addEventListener("change", function() {
-            const snapDocsField = document.getElementById("snap_docs");
-            snapDocsField.disabled = this.value === "No" || this.value === "Not Applying";
-            snapDocsField.classList.toggle("disabled-field", this.value === "No" || this.value === "Not Applying");
-        });
+        const startedWork = document.getElementById("started_work").value;
+        const workStatus = document.getElementById("work_status").value;
 
-        document.getElementById("benefits_help").addEventListener("change", function() {
-            const benefitsExplainField = document.getElementById("benefits_explain");
-            benefitsExplainField.disabled = this.value === "No";
-            benefitsExplainField.classList.toggle("disabled-field", this.value === "No");
-        });
+        // Initialize display states for "Have you started working?"
+        workStatusSection.style.display = startedWork === "No" ? "block" : "none";
+        applyingSection.style.display = workStatus === "Applying" ? "block" : "none";
+        interviewSection.style.display = workStatus === "Interview(s) Scheduled" ? "block" : "none";
+        onboardingSection.style.display = workStatus === "Offer Accepted, On-boarding" ? "block" : "none";
 
-        document.getElementById("started_work").addEventListener("change", function() {
-            const workStatusSection = document.getElementById("work_status_section");
+        // Initialize visibility for Vital Documents section
+        vitalDocsOptions.style.display = vitalDocsNeeded.value === "Yes" ? "block" : "none";
+
+        // Initialize visibility for PCP section
+        pcpDetailsSection.style.display = pcpHelp.value === "No" ? "block" : "none";
+
+        // Initialize visibility for Phone Number section
+        newPhoneSection.style.display = phoneChanged.value === "Yes" ? "block" : "none";
+
+        // Initialize visibility for Email section
+        newEmailSection.style.display = emailChanged.value === "Yes" ? "block" : "none";
+
+        // Initialize visibility for Other Benefits section
+        benefitsOptions.style.display = benefitsHelp.value === "Yes" ? "block" : "none";
+
+        // Event listener for "Have you started working?"
+        document.getElementById("started_work").addEventListener("change", function () {
             workStatusSection.style.display = this.value === "No" ? "block" : "none";
         });
 
-        document.getElementById("work_status").addEventListener("change", function() {
-            const applyingSection = document.getElementById("applying-explanation");
-            const interviewSection = document.getElementById("interview-explanation");
-            const onboardingSection = document.getElementById("onboarding-explanation");
-
-            applyingSection.style.display = "none";
-            interviewSection.style.display = "none";
-            onboardingSection.style.display = "none";
-
-            if (this.value === "Applying") {
-                applyingSection.style.display = "block";
-            } else if (this.value === "Interview(s) Scheduled") {
-                interviewSection.style.display = "block";
-            } else if (this.value === "Offer Accepted, On-boarding") {
-                onboardingSection.style.display = "block";
-            }
+        // Event listener for "How are the applications coming along?"
+        document.getElementById("work_status").addEventListener("change", function () {
+            applyingSection.style.display = this.value === "Applying" ? "block" : "none";
+            interviewSection.style.display = this.value === "Interview(s) Scheduled" ? "block" : "none";
+            onboardingSection.style.display = this.value === "Offer Accepted, On-boarding" ? "block" : "none";
         });
-    </script>
-</body>
-</html>
+
+        // Event listener for Vital Documents section
+        vitalDocsNeeded.addEventListener("change", function () {
+            vitalDocsOptions.style.display = this.value === "Yes" ? "block" : "none";
+        });
+
+        // Event listener for PCP section
+        pcpHelp.addEventListener("change", function () {
+            pcpDetailsSection.style.display = this.value === "No" ? "block" : "none";
+        });
+
+        // Event listener for Phone Number section
+        phoneChanged.addEventListener("change", function () {
+            newPhoneSection.style.display = this.value === "Yes" ? "block" : "none";
+        });
+
+        // Event listener for Email section
+        emailChanged.addEventListener("change", function () {
+            newEmailSection.style.display = this.value === "Yes" ? "block" : "none";
+        });
+
+        // Event listener for Other Benefits section
+        benefitsHelp.addEventListener("change", function () {
+            benefitsOptions.style.display = this.value === "Yes" ? "block" : "none";
+        });
+    });
+</script>
